@@ -55,6 +55,23 @@ func ContainsPair(hand []Card) bool {
 	return false
 }
 
+// ContainsTwoPair checks if the hand contains two pairs.
+func ContainsTwoPair(hand []Card) bool {
+	valueCount := make(map[int]int) // Map to count occurrences of each card value.
+	pairCount := 0
+
+	for _, card := range hand {
+		valueCount[card.Value]++
+		// If we've found a pair, increase the pair count. Then reset the count for that value to avoid counting it as 2 pairs if we see it again.
+		if valueCount[card.Value] == 2 {
+			pairCount++
+			valueCount[card.Value] = 0 // Reset to avoid double counting this value as two pairs.
+		}
+	}
+	// If we've found exactly two pairs, return true.
+	return pairCount >= 2
+}
+
 //=========== Helper Functions =================
 
 // isSequential checks if the first 5 cards in a sorted slice of card values form a straight.
