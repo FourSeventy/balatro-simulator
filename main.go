@@ -13,6 +13,8 @@ type Card struct {
 	Suit  string
 }
 
+type HandEvaluationFunction func([]Card) bool
+
 // NewDeck creates and returns a customized deck of cards aimed at optimizing for straights.
 func NewDeck() []Card {
 	suits := []string{"Hearts", "Diamonds", "Clubs", "Spades"}
@@ -105,16 +107,39 @@ func contains(slice []int, value int) bool {
 	return false
 }
 
-func main() {
-	deck := NewDeck()
-	Shuffle(deck)
-	hand := DrawHand(deck, 8)          // Draw a hand of 8 cards
-	straight := ContainsStraight(hand) //see if hand contains a straight
-
-	// For simplicity, just print out the hand for now.
-	for _, card := range hand {
-		fmt.Printf("%d of %s, ", card.Value, card.Suit)
+// ProbabilityRun takes a deck and an evaluation function and tests n number of hands (shuffling each time) to determine the probability that a hand satisfies the evaluationFunction
+func FitnessFunc(deck []Card, handSize int, evaluationFunction HandEvaluationFunction, iterations int) float64 {
+	satisfactions := 0.0
+	for i := 0; i < iterations; i++ {
+		//shuffle deck
+		Shuffle(deck)
+		//draw hand
+		hand := DrawHand(deck, handSize)
+		//see if hand satisfies function
+		result := evaluationFunction(hand)
+		if result == true {
+			satisfactions += 1
+		}
 	}
 
-	fmt.Printf("\nContains straight: %v\n", straight)
+	return satisfactions / float64(iterations)
+}
+
+func main() {
+	// deck := NewDeck()
+	// Shuffle(deck)
+	// hand := DrawHand(deck, 8)          // Draw a hand of 8 cards
+	// straight := ContainsStraight(hand) //see if hand contains a straight
+	// // print out hand
+	// for _, card := range hand {
+	// 	fmt.Printf("%d of %s, ", card.Value, card.Suit)
+	// }
+
+	//creates a new deck
+	deck := NewDeck()
+	//calculates the odds that in any random hand of 8 cards it contains a straight
+	result := FitnessFunc(deck, 8, ContainsStraight, 10000)
+
+	fmt.Printf("This deck has a %v probability to draw a straight in any given hand of size %v \n", result, 8)
+
 }
