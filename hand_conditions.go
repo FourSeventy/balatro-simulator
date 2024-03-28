@@ -72,6 +72,27 @@ func ContainsTwoPair(hand []Card) bool {
 	return pairCount >= 2
 }
 
+// ContainsFullHouse checks if the hand contains a full house.
+func ContainsFullHouse(hand []Card) bool {
+	valueCount := make(map[int]int) // Map to count occurrences of each card value.
+	for _, card := range hand {
+		valueCount[card.Value]++
+	}
+
+	// Variables to check for the presence of a pair and a three of a kind.
+	var hasPair, hasThreeOfAKind bool
+	for _, count := range valueCount {
+		if count == 2 {
+			hasPair = true
+		} else if count == 3 {
+			hasThreeOfAKind = true
+		}
+	}
+
+	// A full house requires both a pair and a three of a kind.
+	return hasPair && hasThreeOfAKind
+}
+
 //=========== Helper Functions =================
 
 // isSequential checks if the first 5 cards in a sorted slice of card values form a straight.

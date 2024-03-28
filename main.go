@@ -36,7 +36,6 @@ func main() {
 	deck := NewDeck()
 	//calculates the odds that in any random hand of 8 cards it contains a straight
 	result := RunSimulation(deck, 8, ContainsStraight, 50000)
-
 	fmt.Printf("This deck has a %v probability to draw a straight in any given hand of size %v \n", result, 8)
 
 	//calculates the odds that in any random hand of 8 cards it contains a pair
@@ -45,6 +44,10 @@ func main() {
 
 	//calculates the odds that in any random hand of 8 cards it contains two pair
 	result = RunSimulation(deck, 8, ContainsTwoPair, 50000)
+	fmt.Printf("This deck has a %v probability to draw a two pair in any given hand of size %v \n", result, 8)
+
+	//calculates the odds that in any random hand of 8 cards it contains a full house
+	result = RunSimulation(deck, 8, ContainsFullHouse, 50000)
 	fmt.Printf("This deck has a %v probability to draw a two pair in any given hand of size %v \n", result, 8)
 
 }
