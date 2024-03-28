@@ -39,4 +39,8 @@ func main() {
 
 	fmt.Printf("This deck has a %v probability to draw a straight in any given hand of size %v \n", result, 8)
 
+	//calculates the odds that in any random hand of 8 cards it contains a pair
+	result = RunSimulation(deck, 8, ContainsPair, 50000)
+	fmt.Printf("This deck has a %v probability to draw a pair in any given hand of size %v \n", result, 8)
+
 }

@@ -43,6 +43,20 @@ func ContainsStraight(hand []Card) bool {
 	return false
 }
 
+// ContainsPair checks if the hand contains a poker pair.
+func ContainsPair(hand []Card) bool {
+	valueCount := make(map[int]int) // Map to count occurrences of each card value.
+	for _, card := range hand {
+		valueCount[card.Value]++
+		if valueCount[card.Value] == 2 { // If any card value occurs twice, we have a pair.
+			return true
+		}
+	}
+	return false
+}
+
+//=========== Helper Functions =================
+
 // isSequential checks if the first 5 cards in a sorted slice of card values form a straight.
 func isSequential(values []int) bool {
 	for i := 0; i < 4; i++ {
