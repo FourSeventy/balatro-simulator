@@ -5,6 +5,80 @@ import "sort"
 // this type represents a function that tests if a given hand satisfies a condition
 type HandConditionFunction func([]Card) bool
 
+// ContainsPair checks if the hand contains a poker pair.
+func ContainsPair(hand []Card) bool {
+	valueCount := make(map[int]int) // Map to count occurrences of each card value.
+	for _, card := range hand {
+		valueCount[card.Value]++
+		if valueCount[card.Value] == 2 { // If any card value occurs twice, we have a pair.
+			return true
+		}
+	}
+	return false
+}
+
+// ContainsTwoPair checks if the hand contains two pairs.
+func ContainsTwoPair(hand []Card) bool {
+	valueCount := make(map[int]int) // Map to count occurrences of each card value.
+	pairCount := 0
+
+	for _, card := range hand {
+		valueCount[card.Value]++
+		// If we've found a pair, increase the pair count. Then reset the count for that value to avoid counting it as 2 pairs if we see it again.
+		if valueCount[card.Value] == 2 {
+			pairCount++
+			valueCount[card.Value] = 0 // Reset to avoid double counting this value as two pairs.
+		}
+	}
+	// If we've found exactly two pairs, return true.
+	return pairCount >= 2
+}
+
+// ContainsPair checks if the hand contains a poker pair.
+func ContainsThreeOfAKind(hand []Card) bool {
+	valueCount := make(map[int]int) // Map to count occurrences of each card value.
+	for _, card := range hand {
+		valueCount[card.Value]++
+		if valueCount[card.Value] == 3 { // If any card value occurs three times
+			return true
+		}
+	}
+	return false
+}
+
+// ContainsPair checks if the hand contains a poker pair.
+func ContainsFourOfAKind(hand []Card) bool {
+	valueCount := make(map[int]int) // Map to count occurrences of each card value.
+	for _, card := range hand {
+		valueCount[card.Value]++
+		if valueCount[card.Value] == 4 { // If any card value occurs four times
+			return true
+		}
+	}
+	return false
+}
+
+// ContainsFullHouse checks if the hand contains a full house.
+func ContainsFullHouse(hand []Card) bool {
+	valueCount := make(map[int]int) // Map to count occurrences of each card value.
+	for _, card := range hand {
+		valueCount[card.Value]++
+	}
+
+	// Variables to check for the presence of a pair and a three of a kind.
+	var hasPair, hasThreeOfAKind bool
+	for _, count := range valueCount {
+		if count == 2 {
+			hasPair = true
+		} else if count == 3 {
+			hasThreeOfAKind = true
+		}
+	}
+
+	// A full house requires both a pair and a three of a kind.
+	return hasPair && hasThreeOfAKind
+}
+
 // ContainsStraight takes a slice of Cards and returns true if the hand contains a straight.
 func ContainsStraight(hand []Card) bool {
 	if len(hand) < 5 {
@@ -43,54 +117,36 @@ func ContainsStraight(hand []Card) bool {
 	return false
 }
 
-// ContainsPair checks if the hand contains a poker pair.
-func ContainsPair(hand []Card) bool {
-	valueCount := make(map[int]int) // Map to count occurrences of each card value.
+// ContainsFlush checks if the hand contains a flush.
+func ContainsFlush(hand []Card) bool {
+	suitCount := make(map[string]int) // Map to count occurrences of each suit.
 	for _, card := range hand {
-		valueCount[card.Value]++
-		if valueCount[card.Value] == 2 { // If any card value occurs twice, we have a pair.
+		suitCount[card.Suit]++
+		if suitCount[card.Suit] >= 5 { // If any suit occurs five or more times, we have a flush.
 			return true
 		}
 	}
 	return false
 }
 
-// ContainsTwoPair checks if the hand contains two pairs.
-func ContainsTwoPair(hand []Card) bool {
-	valueCount := make(map[int]int) // Map to count occurrences of each card value.
-	pairCount := 0
+// ContainsStraightFlush checks if the hand contains a straight flush.
+func ContainsStraightFlush(hand []Card) bool {
+	if len(hand) < 5 {
+		return false // Can't form a straight flush with less than 5 cards
+	}
 
-	for _, card := range hand {
-		valueCount[card.Value]++
-		// If we've found a pair, increase the pair count. Then reset the count for that value to avoid counting it as 2 pairs if we see it again.
-		if valueCount[card.Value] == 2 {
-			pairCount++
-			valueCount[card.Value] = 0 // Reset to avoid double counting this value as two pairs.
+	sortByValueThenSuit(hand)
+
+	for i := 0; i < len(hand)-4; i++ { // Need at least 5 cards for a straight flush
+		if hand[i].Suit == hand[i+4].Suit &&
+			hand[i].Value+1 == hand[i+1].Value &&
+			hand[i].Value+2 == hand[i+2].Value &&
+			hand[i].Value+3 == hand[i+3].Value &&
+			hand[i].Value+4 == hand[i+4].Value {
+			return true
 		}
 	}
-	// If we've found exactly two pairs, return true.
-	return pairCount >= 2
-}
-
-// ContainsFullHouse checks if the hand contains a full house.
-func ContainsFullHouse(hand []Card) bool {
-	valueCount := make(map[int]int) // Map to count occurrences of each card value.
-	for _, card := range hand {
-		valueCount[card.Value]++
-	}
-
-	// Variables to check for the presence of a pair and a three of a kind.
-	var hasPair, hasThreeOfAKind bool
-	for _, count := range valueCount {
-		if count == 2 {
-			hasPair = true
-		} else if count == 3 {
-			hasThreeOfAKind = true
-		}
-	}
-
-	// A full house requires both a pair and a three of a kind.
-	return hasPair && hasThreeOfAKind
+	return false
 }
 
 //=========== Helper Functions =================
@@ -113,4 +169,14 @@ func contains(slice []int, value int) bool {
 		}
 	}
 	return false
+}
+
+// sortByValueThenSuit sorts the cards first by value, then by suit.
+func sortByValueThenSuit(cards []Card) {
+	sort.Slice(cards, func(i, j int) bool {
+		if cards[i].Value == cards[j].Value {
+			return cards[i].Suit < cards[j].Suit
+		}
+		return cards[i].Value < cards[j].Value
+	})
 }
