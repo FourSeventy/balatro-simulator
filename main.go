@@ -108,7 +108,7 @@ func contains(slice []int, value int) bool {
 }
 
 // ProbabilityRun takes a deck and an evaluation function and tests n number of hands (shuffling each time) to determine the probability that a hand satisfies the evaluationFunction
-func FitnessFunc(deck []Card, handSize int, evaluationFunction HandEvaluationFunction, iterations int) float64 {
+func RunSimulation(deck []Card, handSize int, evaluationFunction HandEvaluationFunction, iterations int) float64 {
 	satisfactions := 0.0
 	for i := 0; i < iterations; i++ {
 		//shuffle deck
@@ -138,7 +138,7 @@ func main() {
 	//creates a new deck
 	deck := NewDeck()
 	//calculates the odds that in any random hand of 8 cards it contains a straight
-	result := FitnessFunc(deck, 8, ContainsStraight, 10000)
+	result := RunSimulation(deck, 8, ContainsStraight, 50000)
 
 	fmt.Printf("This deck has a %v probability to draw a straight in any given hand of size %v \n", result, 8)
 
