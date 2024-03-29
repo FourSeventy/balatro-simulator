@@ -11,8 +11,8 @@ type Card struct {
 	Suit  string
 }
 
-// NewDeck creates and returns a customized deck of cards aimed at optimizing for straights.
-func NewDeck() []Card {
+// NewBaseDeck creates and returns a customized deck of cards aimed at optimizing for straights.
+func NewBaseDeck() []Card {
 	suits := []string{"Hearts", "Diamonds", "Clubs", "Spades"}
 	values := []int{2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14} // 11-14 represent J, Q, K, A
 	var deck []Card

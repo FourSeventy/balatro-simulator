@@ -5,6 +5,25 @@ import "sort"
 // this type represents a function that tests if a given hand satisfies a condition
 type HandConditionFunction func([]Card) bool
 
+// MonteCarloSimulation takes a deck and a condition function and tests n number of hands (shuffling each time)
+// to determine the probability that a hand satisfies the condition
+func MonteCarloSimulation(deck []Card, handSize int, conditionFunction HandConditionFunction, iterations int) float64 {
+	satisfactions := 0.0
+	for i := 0; i < iterations; i++ {
+		//shuffle deck
+		Shuffle(deck)
+		//draw hand
+		hand := DrawHand(deck, handSize)
+		//see if hand satisfies function
+		result := conditionFunction(hand)
+		if result == true {
+			satisfactions += 1
+		}
+	}
+
+	return satisfactions / float64(iterations)
+}
+
 // ContainsPair checks if the hand contains a poker pair.
 func ContainsPair(hand []Card) bool {
 	valueCount := make(map[int]int) // Map to count occurrences of each card value.
@@ -34,7 +53,7 @@ func ContainsTwoPair(hand []Card) bool {
 	return pairCount >= 2
 }
 
-// ContainsPair checks if the hand contains a poker pair.
+// ContainsPair checks if the hand contains a three of a kind
 func ContainsThreeOfAKind(hand []Card) bool {
 	valueCount := make(map[int]int) // Map to count occurrences of each card value.
 	for _, card := range hand {
@@ -46,7 +65,7 @@ func ContainsThreeOfAKind(hand []Card) bool {
 	return false
 }
 
-// ContainsPair checks if the hand contains a poker pair.
+// ContainsPair checks if the hand contains a four of a kind
 func ContainsFourOfAKind(hand []Card) bool {
 	valueCount := make(map[int]int) // Map to count occurrences of each card value.
 	for _, card := range hand {
@@ -130,6 +149,7 @@ func ContainsFlush(hand []Card) bool {
 }
 
 // ContainsStraightFlush checks if the hand contains a straight flush.
+// TODO: I think this has a bug?
 func ContainsStraightFlush(hand []Card) bool {
 	if len(hand) < 5 {
 		return false // Can't form a straight flush with less than 5 cards
