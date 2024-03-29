@@ -35,38 +35,48 @@ func main() {
 	// }
 
 	// creates a new deck
-	deck := NewBaseDeck()
+	// deck := NewBaseDeck()
 
 	//calculates the odds that in any random hand of 8 cards it contains a pair
-	result := MonteCarloSimulation(deck, 8, ContainsPair, 20000)
-	fmt.Printf("This deck has a %v probability to draw a pair in any given hand of size %v \n", result, 8)
+	// result := MonteCarloSimulation(deck, 8, ContainsPair, 20000)
+	// fmt.Printf("This deck has a %v probability to draw a pair in any given hand of size %v \n", result, 8)
 
 	////calculates the odds that in any random hand of 8 cards it contains two pair
-	//result = RunSimulation(deck, 8, ContainsTwoPair, 20000)
+	//result = MonteCarloSimulation(deck, 8, ContainsTwoPair, 20000)
 	//fmt.Printf("This deck has a %v probability to draw a two pair in any given hand of size %v \n", result, 8)
 
 	////calculates the odds that in any random hand of 8 cards it contains three of a kind
-	//result = RunSimulation(deck, 8, ContainsThreeOfAKind, 20000)
+	//result = MonteCarloSimulation(deck, 8, ContainsThreeOfAKind, 20000)
 	//fmt.Printf("This deck has a %v probability to draw a three of a kind in any given hand of size %v \n", result, 8)
 
 	////calculates the odds that in any random hand of 8 cards it contains a straight
-	//result = RunSimulation(deck, 8, ContainsStraight, 20000)
+	//result = MonteCarloSimulation(deck, 8, ContainsStraight, 20000)
 	//fmt.Printf("This deck has a %v probability to draw a straight in any given hand of size %v \n", result, 8)
 
 	////calculates the odds that in any random hand of 8 cards it contains a flush
-	//result = RunSimulation(deck, 8, ContainsFlush, 20000)
+	//result = MonteCarloSimulation(deck, 8, ContainsFlush, 20000)
 	//fmt.Printf("This deck has a %v probability to draw a flush in any given hand of size %v \n", result, 8)
 
 	////calculates the odds that in any random hand of 8 cards it contains a full house
-	//result = RunSimulation(deck, 8, ContainsFullHouse, 20000)
+	//result = MonteCarloSimulation(deck, 8, ContainsFullHouse, 20000)
 	//fmt.Printf("This deck has a %v probability to draw a full house in any given hand of size %v \n", result, 8)
 
 	////calculates the odds that in any random hand of 8 cards it contains four of a kind
-	//result = RunSimulation(deck, 8, ContainsFourOfAKind, 20000)
+	//result = MonteCarloSimulation(deck, 8, ContainsFourOfAKind, 20000)
 	//fmt.Printf("This deck has a %v probability to draw a four of a kind in any given hand of size %v \n", result, 8)
 
 	////calculates the odds that in any random hand of 8 cards it contains a straight flush
-	//result = RunSimulation(deck, 8, ContainsStraightFlush, 20000)
+	//result = MonteCarloSimulation(deck, 8, ContainsStraightFlush, 20000)
 	//fmt.Printf("This deck has a %v probability to draw a straight flush in any given hand of size %v \n", result, 8)
+
+	deck := NewBaseDeck()
+	//calculates the odds that in any random hand of 8 cards it contains a straight
+	result := MonteCarloSimulation(deck, 8, ContainsStraight, 30000)
+	fmt.Printf("Base Deck has a %v probability to draw a straight in any given hand of size %v \n", result, 8)
+
+	deck = NewAbandonedDeck()
+	//calculates the odds that in any random hand of 8 cards it contains a straight
+	result = MonteCarloSimulation(deck, 8, ContainsStraight, 30000)
+	fmt.Printf("Abandoned Deck has a %v probability to draw a straight in any given hand of size %v \n", result, 8)
 
 }

@@ -29,6 +29,23 @@ func NewBaseDeck() []Card {
 	return deck
 }
 
+func NewAbandonedDeck() []Card {
+	suits := []string{"Hearts", "Diamonds", "Clubs", "Spades"}
+	values := []int{2, 3, 4, 5, 6, 7, 8, 9, 10, 14} // 11-14 represent J, Q, K, A
+	var deck []Card
+
+	for _, suit := range suits {
+		for _, value := range values {
+			deck = append(deck, Card{
+				Value: value,
+				Suit:  suit,
+			})
+		}
+	}
+
+	return deck
+}
+
 // Shuffle shuffles the given deck of cards.
 func Shuffle(deck []Card) {
 	rand.Seed(time.Now().UnixNano())
